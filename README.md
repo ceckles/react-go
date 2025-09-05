@@ -78,6 +78,7 @@ The React app will run on http://localhost:5173
 ## API Endpoints
 
 - `GET /api/todos` - Get all todos
+- `GET /api/todos/:id` - Get a single todo by ID
 - `POST /api/todos` - Create a new todo
 - `PATCH /api/todos/:id` - Toggle todo completion status
 - `DELETE /api/todos/:id` - Delete a todo
