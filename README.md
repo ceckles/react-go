@@ -38,6 +38,7 @@ go mod tidy
 ```env
 PORT=3001
 MONGODB_URI=your_mongodb_connection_string
+VITE_BACKEND_URL=http://localhost:3001/api
 ```
 
 3. Install Air for hot reloading:
