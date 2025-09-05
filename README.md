@@ -147,3 +147,5 @@ The deployment will:
 
 Environment Variables:
 - Add your `MONGODB_URI` in the Vercel dashboard under Settings > Environment Variables
+
+Backedn deployed to Render at https://react-go-gpfo.onrender.com/api
