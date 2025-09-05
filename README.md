@@ -96,3 +96,36 @@ The React app will run on http://localhost:5173
 - Chakra UI
 - React Query
 - TypeScript
+
+## Deployment
+
+### GitHub Actions Setup
+
+The repository includes GitHub Actions workflows for both backend and frontend:
+
+1. Backend workflow (`/.github/workflows/go-build.yml`):
+   - Builds and tests the Go application
+   - Triggered on push/PR to main branch
+
+2. Frontend workflow (`/.github/workflows/react-build.yml`):
+   - Installs dependencies with pnpm
+   - Builds the React application
+   - Triggered on push/PR to main branch
+
+### Environment Variables
+
+Make sure to set these secrets in your GitHub repository:
+- `MONGODB_URI`: Your MongoDB connection string
+- `PORT`: The port for the backend server (default: 3001)
+
+### Deployment Steps
+
+1. Push your code to GitHub:
+```bash
+git add .
+git commit -m "Initial deployment"
+git push origin main
+```
+
+2. The GitHub Actions workflows will automatically run on push.
+3. Check the Actions tab in your GitHub repository for build status.
