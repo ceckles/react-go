@@ -118,14 +118,32 @@ Make sure to set these secrets in your GitHub repository:
 - `MONGODB_URI`: Your MongoDB connection string
 - `PORT`: The port for the backend server (default: 3001)
 
-### Deployment Steps
+### Deployment to Vercel
 
-1. Push your code to GitHub:
+1. Install Vercel CLI:
 ```bash
-git add .
-git commit -m "Initial deployment"
-git push origin main
+npm install -g vercel
 ```
 
-2. The GitHub Actions workflows will automatically run on push.
-3. Check the Actions tab in your GitHub repository for build status.
+2. Login to Vercel:
+```bash
+vercel login
+```
+
+3. Deploy to Vercel:
+```bash
+vercel
+```
+
+4. For production deployment:
+```bash
+vercel --prod
+```
+
+The deployment will:
+- Build and deploy your Go backend as serverless functions
+- Build and deploy your React frontend
+- Provide you with a production URL
+
+Environment Variables:
+- Add your `MONGODB_URI` in the Vercel dashboard under Settings > Environment Variables
