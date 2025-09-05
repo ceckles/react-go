@@ -70,7 +70,7 @@ func main() {
 
 	// Add CORS middleware
 	app.Use(cors.New(cors.Config{
-		AllowOrigins: []string{"http://localhost:5173", "http://127.0.0.1:5173", "https://react-go-gpfo.onrender.com"},
+		AllowOrigins: []string{"http://localhost:5173", "http://127.0.0.1:5173", "https://react-go-gpfo.onrender.com", "https://react-go-api-task.vercel.app"},
 		AllowMethods: []string{"GET", "POST", "PUT", "DELETE", "PATCH"},
 		AllowHeaders: []string{"Origin", "Content-Type", "Accept"},
 	}))
