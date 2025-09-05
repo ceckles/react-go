@@ -8,6 +8,7 @@ import (
 	"os"
 
 	"github.com/gofiber/fiber/v3"
+	"github.com/gofiber/fiber/v3/middleware/cors"
 	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -59,6 +60,13 @@ func main() {
 	collection = (client.Database("golang_db").Collection("todos"))
 
 	app := fiber.New()
+
+	// Add CORS middleware
+	app.Use(cors.New(cors.Config{
+		AllowOrigins: []string{"http://localhost:5173", "http://127.0.0.1:5173"},
+		AllowMethods: []string{"GET", "POST", "PUT", "DELETE", "PATCH"},
+		AllowHeaders: []string{"Origin", "Content-Type", "Accept"},
+	}))
 
 	app.Get("/", func(c fiber.Ctx) error {
 		//Health check endpoint status 200 Ok
