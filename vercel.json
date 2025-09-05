@@ -1,27 +1,23 @@
 {
-    "version": 2,
-    "builds": [
-        {
-            "src": "main.go",
-            "use": "@vercel/go"
-        },
-        {
-            "src": "client/*",
-            "use": "@vercel/static-build",
-            "config": {
-                "buildCommand": "cd client && pnpm install && pnpm run build",
-                "outputDirectory": "client/dist"
-            }
-        }
-    ],
-    "routes": [
-        {
-            "src": "/api/(.*)",
-            "dest": "main.go"
-        },
-        {
-            "src": "/(.*)",
-            "dest": "client/dist/$1"
-        }
-    ]
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/**/*.go",
+      "use": "@vercel/go"
+    },
+    {
+      "src": "client/*",
+      "use": "@vercel/static-build",
+      "config": {
+        "buildCommand": "cd client && pnpm install && pnpm run build",
+        "outputDirectory": "client/dist"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "client/dist/$1"
+    }
+  ]
 }
