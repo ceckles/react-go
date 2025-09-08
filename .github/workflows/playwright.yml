@@ -44,11 +44,37 @@ jobs:
 
       - name: Start Go server in background
         run: |
-          go run main.go &
+          echo "Starting Go server with environment variables..."
+          go run main.go > server.log 2>&1 &
+          SERVER_PID=$!
+          echo "Server PID: $SERVER_PID"
           echo "Waiting for server to start..."
-          sleep 10
-          # Test if server is responding
-          curl -f http://localhost:3001/api/todos || (echo "Server failed to start" && exit 1)
+          sleep 15
+          
+          echo "Checking if server process is running..."
+          if ps -p $SERVER_PID > /dev/null; then
+            echo "Server process is running"
+          else
+            echo "Server process died. Log contents:"
+            cat server.log
+            exit 1
+          fi
+          
+          echo "Testing server connectivity..."
+          for i in {1..10}; do
+            if curl -f http://localhost:3001/api/todos; then
+              echo "Server is responding!"
+              break
+            else
+              echo "Attempt $i failed, retrying in 2 seconds..."
+              sleep 2
+            fi
+            if [ $i -eq 10 ]; then
+              echo "Server failed to respond after 10 attempts. Log contents:"
+              cat server.log
+              exit 1
+            fi
+          done
         env:
           MONGODB_URI: ${{ secrets.MONGODB_URI }}
           PORT: ${{ secrets.PORT }}
