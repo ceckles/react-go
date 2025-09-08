@@ -176,23 +176,36 @@ func updateTodo(c fiber.Ctx) error {
 
 	// Create a filter to find the document by its ID
 	filter := bson.M{"_id": objectID}
-	// Find the current todo to get its complete status
-	var todo Todo
-	if err := collection.FindOne(context.Background(), filter).Decode(&todo); err != nil {
-		return err
+	
+	// Use MongoDB's aggregation pipeline to atomically toggle the boolean
+	// This prevents race conditions by doing the read and update in a single operation
+	update := bson.A{
+		bson.M{
+			"$set": bson.M{
+				"complete": bson.M{
+					"$not": "$complete", // Toggle the boolean value atomically
+				},
+			},
+		},
 	}
-	// Toggle the complete status
-	update := bson.M{"$set": bson.M{"complete": !todo.Complete}}
-	// Execute the update operation in MongoDB
-	_, err = collection.UpdateOne(context.Background(), filter, update)
+	
+	// Use FindOneAndUpdate with aggregation pipeline and ReturnDocument.After
+	opts := options.FindOneAndUpdate().SetReturnDocument(options.After)
+	var updatedTodo Todo
+	err = collection.FindOneAndUpdate(context.Background(), filter, update, opts).Decode(&updatedTodo)
 	if err != nil {
-		return err
+		if err == mongo.ErrNoDocuments {
+			return c.Status(404).JSON(fiber.Map{
+				"error": "Todo not found",
+			})
+		}
+		return c.Status(500).JSON(fiber.Map{
+			"error": "Failed to update todo",
+		})
 	}
 
-	// Return a success message
-	return c.Status(200).JSON(fiber.Map{
-		"message": "Todo updated successfully",
-	})
+	// Return the updated todo data
+	return c.Status(200).JSON(updatedTodo)
 }
 
 func deleteTodo(c fiber.Ctx) error {

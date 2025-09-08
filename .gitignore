@@ -47,3 +47,15 @@ sketch
 /tmp
 
 # End of https://www.toptal.com/developers/gitignore/api/go,react
+
+# Build artifacts
+react-go
+/client/dist
+
+# Zone.Identifier files  
+*.Zone.Identifier
+
+# Playwright
+test-results/
+playwright-report/
+playwright/.cache/
