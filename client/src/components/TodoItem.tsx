@@ -52,7 +52,7 @@ const TodoItem = ({ todo }: { todo: Todo }) => {
 	});
 
 	return (
-		<Flex gap={2} alignItems={"center"}>
+		<Flex gap={2} alignItems={"center"} data-testid="todo-item">
 			<Flex
 				flex={1}
 				alignItems={"center"}
@@ -80,11 +80,21 @@ const TodoItem = ({ todo }: { todo: Todo }) => {
 				)}
 			</Flex>
 			<Flex gap={2} alignItems={"center"}>
-				<Box color={"green.500"} cursor={"pointer"} onClick={() => updateTodo()}>
+				<Box 
+					color={"green.500"} 
+					cursor={"pointer"} 
+					onClick={() => updateTodo()}
+					data-testid="todo-checkbox"
+				>
 					{!isUpdating && <FaCheckCircle size={20} />}
 					{isUpdating && <Spinner size={"sm"} />}
 				</Box>
-				<Box color={"red.500"} cursor={"pointer"} onClick={() => deleteTodo()}>
+				<Box 
+					color={"red.500"} 
+					cursor={"pointer"} 
+					onClick={() => deleteTodo()}
+					data-testid="delete-todo-button"
+				>
 					{!isDeleting && <MdDelete size={25} />}
 					{isDeleting && <Spinner size={"sm"} />}
 				</Box>

@@ -50,6 +50,7 @@ const TodoForm = () => {
 					value={newTodo}
 					onChange={(e) => setNewTodo(e.target.value)}
 					ref={(input) => input && input.focus()}
+					data-testid="todo-input"
 				/>
 				<Button
 					mx={2}
@@ -57,6 +58,7 @@ const TodoForm = () => {
 					_active={{
 						transform: "scale(.97)",
 					}}
+					data-testid="add-todo-button"
 				>
 					{isCreating ? <Spinner size={"xs"} /> : <IoMdAdd size={30} />}
 				</Button>
