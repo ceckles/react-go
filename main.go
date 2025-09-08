@@ -80,6 +80,10 @@ func main() {
 		return c.Status(200).JSON(fiber.Map{"status": "OK"})
 	})
 
+	app.Get("/api/health", func(c fiber.Ctx) error {
+		return c.Status(200).JSON(fiber.Map{"status": "healthy"})
+	})
+
 	//Todo CRUD routes
 	app.Get("/api/todos", getTodos)
 	app.Get("/api/todos/:id", getTodo)

@@ -52,7 +52,7 @@ const TodoItem = ({ todo }: { todo: Todo }) => {
 	});
 
 	return (
-		<Flex gap={2} alignItems={"center"}>
+		<Flex gap={2} alignItems={"center"} data-testid={`todo-item-${todo._id}`}>
 			<Flex
 				flex={1}
 				alignItems={"center"}
@@ -63,30 +63,31 @@ const TodoItem = ({ todo }: { todo: Todo }) => {
 				justifyContent={"space-between"}
 			>
 				<Text
+					data-testid={`todo-text-${todo._id}`}
 					color={todo.complete ? "green.200" : "yellow.100"}
 					textDecoration={todo.complete ? "line-through" : "none"}
 				>
 					{todo.body}
 				</Text>
 				{todo.complete && (
-					<Badge ml='1' colorScheme='green'>
+					<Badge ml='1' colorScheme='green' data-testid={`todo-badge-${todo._id}`}>
 						Done
 					</Badge>
 				)}
 				{!todo.complete && (
-					<Badge ml='1' colorScheme='yellow'>
+					<Badge ml='1' colorScheme='yellow' data-testid={`todo-badge-${todo._id}`}>
 						In Progress
 					</Badge>
 				)}
 			</Flex>
 			<Flex gap={2} alignItems={"center"}>
 				<Box color={"green.500"} cursor={"pointer"} onClick={() => updateTodo()}>
-					{!isUpdating && <FaCheckCircle size={20} />}
-					{isUpdating && <Spinner size={"sm"} />}
+					{!isUpdating && <FaCheckCircle size={20} data-testid={`complete-button-${todo._id}`} />}
+					{isUpdating && <Spinner size={"sm"} data-testid={`complete-spinner-${todo._id}`} />}
 				</Box>
 				<Box color={"red.500"} cursor={"pointer"} onClick={() => deleteTodo()}>
-					{!isDeleting && <MdDelete size={25} />}
-					{isDeleting && <Spinner size={"sm"} />}
+					{!isDeleting && <MdDelete size={25} data-testid={`delete-button-${todo._id}`} />}
+					{isDeleting && <Spinner size={"sm"} data-testid={`delete-spinner-${todo._id}`} />}
 				</Box>
 			</Flex>
 		</Flex>
