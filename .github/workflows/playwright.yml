@@ -11,6 +11,12 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-latest
 
+    services:
+      mongodb:
+        image: mongo:6.0
+        ports:
+          - 27017:27017
+
     steps:
       - uses: actions/checkout@v4
 
@@ -34,10 +40,21 @@ jobs:
         working-directory: ./client
         run: pnpm exec playwright install --with-deps chromium
 
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.21'
+
+      - name: Install Go dependencies
+        run: go mod download
+
       - name: Start Go server in background
         run: |
           go run main.go &
-          sleep 5
+          echo "Waiting for server to start..."
+          sleep 10
+          # Test if server is responding
+          curl -f http://localhost:3001/api/todos || (echo "Server failed to start" && exit 1)
 
       - name: Run Playwright tests
         working-directory: ./client
