@@ -24,6 +24,7 @@ jobs:
         with:
           node-version: '20.x'
           cache: 'pnpm'
+          cache-dependency-path: './client/pnpm-lock.yaml'
 
       - name: Install dependencies
         working-directory: ./client
@@ -35,7 +36,6 @@ jobs:
 
       - name: Start Go server in background
         run: |
-          cd /home/chad/CODE/GO/GO-TASK
           go run main.go &
           sleep 5
 
