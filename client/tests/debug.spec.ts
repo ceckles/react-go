@@ -1,72 +1,56 @@
-import { test } from './debug-helpers';
+import { test } from './mcp-server';  // Using our MCP-enabled test
 import { expect } from '@playwright/test';
 
-test('debug todo app operations', async ({ debugPage: page }) => {
+// #github-pull-request_copilot-coding-agent: Debug race condition in todo completion state updates
+test('should handle rapid state updates correctly', async ({ mcpPage: page }) => {
   await page.goto('http://localhost:5173');
 
-  // Create a todo
-  const uniqueText = `Debug Test Todo ${Date.now()}`;
+  // Create two todos in quick succession
+  const todos = [
+    `Quick Todo 1 ${Date.now()}`,
+    `Quick Todo 2 ${Date.now() + 1}`
+  ];
+
+  // Add first todo
   const input = page.locator('input[type="text"]');
   const addButton = page.locator('button[type="submit"]');
 
-  // Set up response promise
-  const responsePromise = page.waitForResponse(response =>
-    response.url().includes('/api/todos') && response.request().method() === 'POST'
-  );
+  // Add both todos quickly
+  const todoIds: string[] = [];
+  for (const todoText of todos) {
+    const responsePromise = page.waitForResponse(response =>
+      response.url().includes('/api/todos') && response.request().method() === 'POST'
+    );
 
-  // Fill and submit form
-  await input.fill(uniqueText);
-  await addButton.click();
+    await input.fill(todoText);
+    await addButton.click();
 
-  // Wait for response and extract todo ID
-  const response = await responsePromise;
-  expect(response.ok()).toBeTruthy();
-  const todoData = await response.json();
-  const todoId = todoData._id;
+    const response = await responsePromise;
+    const data = await response.json();
+    todoIds.push(data._id);
+  }
 
-  // Debug checkpoint 1: Todo creation
-  console.log(`[Debug] Created todo with ID: ${todoId}`);
+  // Try to complete both todos almost simultaneously
+  console.log('[MCP Debug] Attempting to complete todos simultaneously');
+  
+  const [firstComplete, secondComplete] = await Promise.all([
+    page.locator(`[data-testid="complete-button-${todoIds[0]}"]`).click(),
+    page.locator(`[data-testid="complete-button-${todoIds[1]}"]`).click()
+  ]);
 
-  // Verify todo exists
-  const todoItem = page.locator(`[data-testid="todo-item-${todoId}"]`);
-  await expect(todoItem).toBeVisible();
+  // Check the state of both todos
+  for (const todoId of todoIds) {
+    const badge = page.locator(`[data-testid="todo-badge-${todoId}"]`);
+    await expect(badge).toHaveText('Done', { timeout: 5000 });  // This might fail due to race conditions
+  }
 
-  // Complete todo
-  const updateResponsePromise = page.waitForResponse(response =>
-    response.url().includes(`/api/todos/${todoId}`) && response.request().method() === 'PATCH'
-  );
-
-  // Debug checkpoint 2: Before completing todo
-  console.log(`[Debug] Attempting to complete todo ${todoId}`);
-
-  const completeButton = page.locator(`[data-testid="complete-button-${todoId}"]`);
-  await completeButton.click();
-
-  // Wait for update
-  const updateResponse = await updateResponsePromise;
-  expect(updateResponse.ok()).toBeTruthy();
-
-  // Debug checkpoint 3: After completing todo
-  console.log(`[Debug] Todo ${todoId} marked as completed`);
-
-  // Delete todo
-  const deleteResponsePromise = page.waitForResponse(response =>
-    response.url().includes(`/api/todos/${todoId}`) && response.request().method() === 'DELETE'
-  );
-
-  // Debug checkpoint 4: Before deleting todo
-  console.log(`[Debug] Attempting to delete todo ${todoId}`);
-
-  const deleteButton = page.locator(`[data-testid="delete-button-${todoId}"]`);
-  await deleteButton.click();
-
-  // Wait for deletion
-  const deleteResponse = await deleteResponsePromise;
-  expect(deleteResponse.ok()).toBeTruthy();
-
-  // Debug checkpoint 5: After deleting todo
-  console.log(`[Debug] Todo ${todoId} deleted`);
-
-  // Final verification
-  await expect(todoItem).not.toBeVisible();
+  // Clean up
+  console.log('[MCP Debug] Cleaning up todos');
+  for (const todoId of todoIds) {
+    const deletePromise = page.waitForResponse(response =>
+      response.url().includes(`/api/todos/${todoId}`) && response.request().method() === 'DELETE'
+    );
+    await page.locator(`[data-testid="delete-button-${todoId}"]`).click();
+    await deletePromise;
+  }
 });
