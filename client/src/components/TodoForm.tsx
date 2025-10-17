@@ -46,7 +46,7 @@ const TodoForm = () => {
 		<form onSubmit={createTodo}>
 			<Flex gap={2}>
 				<Input
-					type='text'
+					type="text"
 					value={newTodo}
 					onChange={(e) => setNewTodo(e.target.value)}
 					ref={(input) => input && input.focus()}
@@ -54,7 +54,7 @@ const TodoForm = () => {
 				/>
 				<Button
 					mx={2}
-					type='submit'
+					type="submit"
 					_active={{
 						transform: "scale(.97)",
 					}}

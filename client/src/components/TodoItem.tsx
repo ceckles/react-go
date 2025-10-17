@@ -1,9 +1,9 @@
 import { Badge, Box, Flex, Spinner, Text } from "@chakra-ui/react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { FaCheckCircle } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
-import { Todo } from "./TodoList";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { BASE_URL } from "../App";
+import type { Todo } from "./TodoList";
 
 const TodoItem = ({ todo }: { todo: Todo }) => {
 	const queryClient = useQueryClient();
@@ -69,29 +69,29 @@ const TodoItem = ({ todo }: { todo: Todo }) => {
 					{todo.body}
 				</Text>
 				{todo.complete && (
-					<Badge ml='1' colorScheme='green'>
+					<Badge ml="1" colorScheme="green">
 						Done
 					</Badge>
 				)}
 				{!todo.complete && (
-					<Badge ml='1' colorScheme='yellow'>
+					<Badge ml="1" colorScheme="yellow">
 						In Progress
 					</Badge>
 				)}
 			</Flex>
 			<Flex gap={2} alignItems={"center"}>
-				<Box 
-					color={"green.500"} 
-					cursor={"pointer"} 
+				<Box
+					color={"green.500"}
+					cursor={"pointer"}
 					onClick={() => updateTodo()}
 					data-testid="todo-checkbox"
 				>
 					{!isUpdating && <FaCheckCircle size={20} />}
 					{isUpdating && <Spinner size={"sm"} />}
 				</Box>
-				<Box 
-					color={"red.500"} 
-					cursor={"pointer"} 
+				<Box
+					color={"red.500"}
+					cursor={"pointer"}
 					onClick={() => deleteTodo()}
 					data-testid="delete-todo-button"
 				>

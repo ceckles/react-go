@@ -1,8 +1,7 @@
 import { Flex, Spinner, Stack, Text } from "@chakra-ui/react";
-
-import TodoItem from "./TodoItem";
 import { useQuery } from "@tanstack/react-query";
 import { BASE_URL } from "../App";
+import TodoItem from "./TodoItem";
 
 export type Todo = {
 	_id: string;
@@ -20,7 +19,7 @@ const TodoList = () => {
 					throw new Error("Failed to fetch todos");
 				}
 				const data = await res.json();
-				console.log('Fetched todos:', data);
+				console.log("Fetched todos:", data);
 				return data || [];
 			} catch (error) {
 				console.error("Error fetching todos:", error);
@@ -37,8 +36,8 @@ const TodoList = () => {
 				fontWeight={"bold"}
 				textAlign={"center"}
 				my={2}
-				bgGradient='linear(to-l, #0b85f8, #00ffff)'
-				bgClip='text'
+				bgGradient="linear(to-l, #0b85f8, #00ffff)"
+				bgClip="text"
 			>
 				Today's Tasks
 			</Text>
@@ -48,11 +47,11 @@ const TodoList = () => {
 				</Flex>
 			)}
 			{!isLoading && todos?.length === 0 && (
-				<Stack alignItems={"center"} gap='3'>
+				<Stack alignItems={"center"} gap="3">
 					<Text fontSize={"xl"} textAlign={"center"} color={"gray.500"}>
 						All tasks completed! 🤞
 					</Text>
-					<img src='/go.png' alt='Go logo' width={70} height={70} />
+					<img src="/go.png" alt="Go logo" width={70} height={70} />
 				</Stack>
 			)}
 			<Stack gap={3}>
