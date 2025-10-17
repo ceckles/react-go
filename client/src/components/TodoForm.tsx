@@ -15,7 +15,7 @@ const TodoForm = () => {
 		mutationFn: async (e: React.FormEvent) => {
 			e.preventDefault();
 			try {
-				const res = await fetch(BASE_URL + `/todos`, {
+				const res = await fetch(`${BASE_URL}/todos`, {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
@@ -30,14 +30,14 @@ const TodoForm = () => {
 
 				setNewTodo("");
 				return data;
-			} catch (error: any) {
-				throw new Error(error);
+			} catch (error: unknown) {
+				throw new Error(error instanceof Error ? error.message : String(error));
 			}
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["todos"] });
 		},
-		onError: (error: any) => {
+		onError: (error: Error) => {
 			alert(error.message);
 		},
 	});
@@ -49,7 +49,7 @@ const TodoForm = () => {
 					type="text"
 					value={newTodo}
 					onChange={(e) => setNewTodo(e.target.value)}
-					ref={(input) => input && input.focus()}
+					ref={(input) => input?.focus()}
 					data-testid="todo-input"
 				/>
 				<Button

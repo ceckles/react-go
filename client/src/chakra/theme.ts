@@ -1,5 +1,5 @@
 import { extendTheme, type ThemeConfig } from "@chakra-ui/react";
-import { mode } from "@chakra-ui/theme-tools";
+import { type GlobalStyleProps, mode } from "@chakra-ui/theme-tools";
 
 const config: ThemeConfig = {
 	initialColorMode: "dark",
@@ -10,7 +10,7 @@ const config: ThemeConfig = {
 const theme = extendTheme({
 	config,
 	styles: {
-		global: (props: any) => ({
+		global: (props: GlobalStyleProps) => ({
 			body: {
 				backgroundColor: mode("gray.500", "")(props),
 			},
