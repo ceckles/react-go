@@ -1,44 +1,44 @@
 {
-  "name": "client",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "lint": "pnpm exec biome check --write",
-    "format": "pnpm exec biome format --write",
-    "preview": "vite preview",
-    "test": "playwright test",
-    "test:ci": "playwright test",
-    "test:headed": "playwright test --headed",
-    "test:debug": "playwright test --debug"
-  },
-  "dependencies": {
-    "@chakra-ui/react": "^2.10.9",
-    "@chakra-ui/theme-tools": "^2.2.6",
-    "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.1",
-    "@tanstack/react-query": "^5.86.0",
-    "framer-motion": "^11.18.2",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-icons": "^5.5.0"
-  },
-  "devDependencies": {
-    "@biomejs/biome": "2.2.6",
-    "@playwright/test": "^1.55.0",
-    "@types/node": "^24.3.1",
-    "@types/react": "^18.3.24",
-    "@types/react-dom": "^18.3.7",
-    "@typescript-eslint/eslint-plugin": "^7.18.0",
-    "@typescript-eslint/parser": "^7.18.0",
-    "@vitejs/plugin-react": "^4.7.0",
-    "eslint": "^8.57.1",
-    "eslint-plugin-react-hooks": "^4.6.2",
-    "eslint-plugin-react-refresh": "^0.4.20",
-    "playwright": "^1.55.0",
-    "typescript": "^5.9.2",
-    "vite": "^5.4.19"
-  }
+	"name": "client",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"scripts": {
+		"dev": "vite",
+		"build": "tsc && vite build",
+		"lint": "pnpm exec biome check --write",
+		"format": "pnpm exec biome format --write",
+		"preview": "vite preview",
+		"test": "playwright test",
+		"test:ci": "playwright test",
+		"test:headed": "playwright test --headed",
+		"test:debug": "playwright test --debug"
+	},
+	"dependencies": {
+		"@chakra-ui/react": "^2.10.9",
+		"@chakra-ui/theme-tools": "^2.2.6",
+		"@emotion/react": "^11.14.0",
+		"@emotion/styled": "^11.14.1",
+		"@tanstack/react-query": "^5.86.0",
+		"framer-motion": "^11.18.2",
+		"react": "^18.3.1",
+		"react-dom": "^18.3.1",
+		"react-icons": "^5.5.0"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.2.6",
+		"@playwright/test": "^1.55.0",
+		"@types/node": "^24.3.1",
+		"@types/react": "^18.3.24",
+		"@types/react-dom": "^18.3.7",
+		"@typescript-eslint/eslint-plugin": "^7.18.0",
+		"@typescript-eslint/parser": "^7.18.0",
+		"@vitejs/plugin-react": "^4.7.0",
+		"eslint": "^8.57.1",
+		"eslint-plugin-react-hooks": "^4.6.2",
+		"eslint-plugin-react-refresh": "^0.4.20",
+		"playwright": "^1.55.0",
+		"typescript": "^5.9.2",
+		"vite": "^5.4.19"
+	}
 }
